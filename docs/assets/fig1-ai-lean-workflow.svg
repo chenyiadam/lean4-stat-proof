@@ -1,0 +1,42 @@
+<svg role="img" viewBox="0 0 680 540" width="680" xmlns="http://www.w3.org/2000/svg">
+  <title>AI 与 Lean 4 交替验证的定理证明工作流</title>
+  <desc>从自然语言定理到 AI 形式化、草拟证明、编译报错回路的流程图</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <g>
+    <rect x="190" y="40" width="300" height="56" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+    <text x="340" y="62" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#2C2C2A" font-family="sans-serif">① 自然语言定理 / 问题</text>
+    <text x="340" y="82" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#5F5E5A" font-family="sans-serif">先说清楚要证什么</text>
+  </g>
+  <line x1="340" y1="96" x2="340" y2="130" stroke="#5F5E5A" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <g>
+    <rect x="190" y="132" width="300" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="340" y="154" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#085041" font-family="sans-serif">② AI 形式化为 Lean 陈述</text>
+    <text x="340" y="174" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0F6E56" font-family="sans-serif">对照 mathlib 定义，命名要精确</text>
+  </g>
+  <line x1="340" y1="188" x2="340" y2="222" stroke="#5F5E5A" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <g>
+    <rect x="190" y="224" width="300" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="340" y="246" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#085041" font-family="sans-serif">③ AI 草拟证明 / 拆引理</text>
+    <text x="340" y="266" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0F6E56" font-family="sans-serif">先用 sorry 搭骨架，主逻辑先行</text>
+  </g>
+  <line x1="340" y1="280" x2="340" y2="314" stroke="#5F5E5A" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <g>
+    <rect x="190" y="316" width="300" height="56" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="340" y="338" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#0C447C" font-family="sans-serif">④ lake build 编译验证</text>
+    <text x="340" y="358" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5" font-family="sans-serif">报错 / 剩余目标 = 反馈</text>
+  </g>
+  <path d="M490 344 C 560 344 560 252 490 252" fill="none" stroke="#BA7517" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="576" y="300" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#854F0B" font-family="sans-serif">报错回给</text>
+  <text x="576" y="316" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#854F0B" font-family="sans-serif">AI 修正</text>
+  <line x1="340" y1="372" x2="340" y2="406" stroke="#5F5E5A" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="360" y="392" dominant-baseline="central" font-size="12" fill="#5F5E5A" font-family="sans-serif">无 sorry、无报错</text>
+  <g>
+    <rect x="190" y="408" width="300" height="56" rx="8" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+    <text x="340" y="430" text-anchor="middle" dominant-baseline="central" font-size="14" font-weight="500" fill="#27500A" font-family="sans-serif">⑤ 编译通过 = 证明完成</text>
+    <text x="340" y="450" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3B6D11" font-family="sans-serif">由 Lean 内核逐行机器验证</text>
+  </g>
+</svg>

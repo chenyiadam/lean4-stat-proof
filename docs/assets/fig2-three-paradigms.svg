@@ -1,0 +1,36 @@
+<svg role="img" viewBox="0 0 680 290" width="680" xmlns="http://www.w3.org/2000/svg">
+  <title>大牛团队用 AI + Lean 证明定理的三种范式</title>
+  <desc>AlphaProof、Aristotle、陶哲轩蓝图协作三种范式的对比卡片图</desc>
+  <g>
+    <rect x="40" y="40" width="184" height="210" rx="12" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+    <text x="132" y="64" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C" font-family="sans-serif">AlphaProof · DeepMind</text>
+    <text x="132" y="86" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5" font-family="sans-serif">AlphaZero 式强化学习</text>
+    <text x="56" y="116" font-size="12" fill="#0C447C" font-family="sans-serif">· 自动形式化 IMO 题目</text>
+    <text x="56" y="140" font-size="12" fill="#0C447C" font-family="sans-serif">· Lean 状态空间中大规模</text>
+    <text x="56" y="158" font-size="12" fill="#0C447C" font-family="sans-serif">  搜索证明战术</text>
+    <text x="56" y="182" font-size="12" fill="#0C447C" font-family="sans-serif">· 2024 IMO 银牌级</text>
+    <text x="56" y="206" font-size="12" fill="#0C447C" font-family="sans-serif">· 几何交给专用求解器</text>
+  </g>
+  <g>
+    <rect x="248" y="40" width="184" height="210" rx="12" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+    <text x="340" y="64" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041" font-family="sans-serif">Aristotle · Harmonic</text>
+    <text x="340" y="86" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0F6E56" font-family="sans-serif">Draft–Sketch–Prove</text>
+    <text x="264" y="116" font-size="12" fill="#085041" font-family="sans-serif">· 先写自然语言证明并</text>
+    <text x="264" y="134" font-size="12" fill="#085041" font-family="sans-serif">  拆解为引理</text>
+    <text x="264" y="158" font-size="12" fill="#085041" font-family="sans-serif">· sorry 占位 + 蒙特卡洛</text>
+    <text x="264" y="176" font-size="12" fill="#085041" font-family="sans-serif">  图搜索逐个填证明</text>
+    <text x="264" y="200" font-size="12" fill="#085041" font-family="sans-serif">· 2025 IMO 5/6 题，</text>
+    <text x="264" y="218" font-size="12" fill="#085041" font-family="sans-serif">  金牌级</text>
+  </g>
+  <g>
+    <rect x="456" y="40" width="184" height="210" rx="12" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+    <text x="548" y="64" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#633806" font-family="sans-serif">蓝图协作 · 陶哲轩等</text>
+    <text x="548" y="86" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#854F0B" font-family="sans-serif">人主导 + AI 打杂</text>
+    <text x="472" y="116" font-size="12" fill="#633806" font-family="sans-serif">· PFR 猜想 20 余人</text>
+    <text x="472" y="134" font-size="12" fill="#633806" font-family="sans-serif">  3 周完成形式化</text>
+    <text x="472" y="158" font-size="12" fill="#633806" font-family="sans-serif">· 先写引理依赖图蓝图，</text>
+    <text x="472" y="176" font-size="12" fill="#633806" font-family="sans-serif">  逐个认领证明</text>
+    <text x="472" y="200" font-size="12" fill="#633806" font-family="sans-serif">· AI 写机械步骤，</text>
+    <text x="472" y="218" font-size="12" fill="#633806" font-family="sans-serif">  人把控核心思想</text>
+  </g>
+</svg>
