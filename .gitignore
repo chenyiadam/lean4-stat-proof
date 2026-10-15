@@ -12,5 +12,5 @@ Thumbs.db
 .vscode/
 .idea/
 
-# 临时验证文件
-scratch*.lean
+# 临时验证文件（仅限仓库根目录，不影响 examples/mathlib 下的示例）
+/scratch*.lean
