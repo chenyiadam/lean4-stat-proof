@@ -98,6 +98,13 @@ Lean 4 是微软研究院 Leonardo de Moura 主导开发的交互式定理证明
 
 AI 与 Lean 4 的协同证明本质是一个**"生成-验证"闭环**（generate-and-check loop），如图 1 所示：
 
+```
+人      ：定义陈述、把关意图 —— 陈述只有几行，人验得起
+LLM     ：翻译陈述(autoformalization) + 搜索证明(prover) —— 它的每行输出都未经检验
+Lean    ：确定性验证 + 报错 —— 证明可几万行，机器 0.1 秒验完
+报错 ──→ 回喂 LLM ──→ 再编译 ──→ …… 直到 0 错误
+```
+
 ![图 1　AI 与 Lean 4 交替验证的定理证明工作流](assets/fig1-ai-lean-workflow.svg)
 
 **图 1**　AI 与 Lean 4 交替验证的工作流：AI 负责形式化陈述与草拟证明，Lean 编译器负责裁决正确性，报错与剩余证明目标构成回授给 AI 的精确反馈信号。
