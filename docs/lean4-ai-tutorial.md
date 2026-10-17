@@ -1,38 +1,31 @@
 # Lean 4 与 AI 协同的形式化验证：定位、机制与零基础实操
 
-> **文档说明**　本文由《lean4-ai-formal-verification.md》（定位与机制篇）与《Lean4零基础入门教程_1.md》（实操入门篇）合并扩展而成，并做了统一编号、去重与衔接处理。全文四个部分构成一条完整学习曲线：定位 → 语法 → mathlib 统计证明 → 自动化流水线。
-> **上篇**回答"Lean 4 是什么、AI 如何与它协同做定理证明、它对统计学研究意味着什么"；
-> **下篇**是面向 Python 背景、Windows 用户的零基础实操教程：装好环境、建项目、写函数与递归、证明第一批数学定理，并看懂《AI 赋能统计研究》中的所有 Lean 操作；
-> **第三部分**进入正题：安装 mathlib，用它的测度论与积分 API 亲手证明三个统计学结论；
-> **第四部分**把前文的工作流工程化，给出 lean-proof skill 的完整设计与三个自动证明演示。
-> **时间预算**：上篇约 30 分钟；下篇安装 15 分钟、语法+练习 2–3 小时；第三部分 mathlib 安装 30–60 分钟（视网速）、三个例子 2–4 小时；第四部分阅读约 30 分钟。
-> **代码可运行性**：文中所有 Lean 代码均在 Windows 11 + Lean 4 工具链（核心示例）与 mathlib 环境（第三、四部分示例）下逐段编译验证通过；验证方法与缓存陷阱见第 14 章与附录 B。
+> **文档说明**　本文档由四部分组成，是开源项目《AI赋能统计研究》( https://github.com/chenyiadam/ai-for-statistics ) 的应用案例。
+> **第一部分** 回答"Lean 4 是什么、AI 如何与它协同做定理证明、它对统计学研究意味着什么"；
+> **第二部分** 是面向 Python 背景、Windows 用户的零基础实操教程：装好环境、建项目、写函数与递归、证明第一批数学定理，并看懂《AI 赋能统计研究》中的所有 Lean 操作；
+> **第三部分** 进入正题：安装 mathlib，用它的测度论与积分 API 亲手证明三个统计学结论；
+> **第四部分** 把前文的工作流工程化，给出 lean-proof skill 的完整设计与三个自动证明演示。
+> **时间预算** 第一部分约 30 分钟；第二部分安装 15 分钟、语法+练习 2–3 小时；第三部分 mathlib 安装 30–60 分钟、三个例子 2–4 小时；第四部分阅读约 30 分钟。
+> **代码可运行性** 文中所有 Lean 代码均在 Windows 11 + Lean 4 工具链（核心示例）与 mathlib 环境（第三、四部分示例）下逐段编译验证通过；验证方法与缓存陷阱见第 14 章与附录 B。
 
 ---
 
 ## 目录
 
-**上篇｜定位与机制**
+**第一部分｜定位与机制**
 
 - 第 1 章　引言：为什么用证明助手验证定理
-  - 1.1 为什么用证明助手验证定理
-  - 1.2 Lean 4 是什么？和 Python 差在哪？
-  - 1.3 先记住三个核心词
 - 第 2 章　AI 与 Lean 4 的交互机制与工作流程
-  - 2.1 总体工作流
-  - 2.2 核心交互机制：编译器即裁判
-  - 2.3 关键技巧：sorry 骨架法
-  - 2.4 最小可行示例
 - 第 3 章　前沿团队的三种范式
 - 第 4 章　将论文中的统计学定理形式化的操作路径
 - 第 5 章　只给问题、未知答案时，Lean 4 能否独立推导出结果？
 - 第 6 章　Lean 4 的定位：数学工具而非统计学工具
 - 第 7 章　统计学界的形式化与验证工具生态
-- 第 8 章　上篇小结与实践建议
+- 第 8 章　第一部分小结与实践建议
 
-**下篇｜零基础实操入门**
+**第二部分｜零基础实操入门**
 
-- 第 9 章　在 Windows 上安装 Lean 4
+- 第 9 章　 在 Windows 上安装 Lean 4
 - 第 10 章　第一个项目：lake init 与 Infoview
 - 第 11 章　基础语法（Python 对照版）
 - 第 12 章　定理证明入门：Lean 的灵魂部分
@@ -59,7 +52,7 @@
 
 ---
 
-# 上篇｜定位与机制
+# 第一部分｜定位与机制
 
 ## 第 1 章　引言：为什么用证明助手验证定理
 
@@ -90,7 +83,7 @@ Lean 4 是微软研究院 Leonardo de Moura 主导开发的交互式定理证明
 - **tactic（策略）**：你写的一小步证明指令，比如"化简一下""用归纳法"，每个 tactic 负责把待证明的目标啃掉一块。
 - **Infoview（信息窗口）**：VS Code 右边的面板，实时显示"当前证明了什么、还剩什么"。**学 Lean = 学会读 Infoview**。
 
-> 下篇实操将全程不依赖 Mathlib，只用 Lean 4 自带功能；Mathlib 的安装与使用见第 15 章学习路线。
+> 第二部分实操将全程不依赖 Mathlib，只用 Lean 4 自带功能；Mathlib 的安装与使用见第 15 章学习路线。
 
 ## 第 2 章　AI 与 Lean 4 的交互机制与工作流程
 
@@ -98,10 +91,11 @@ Lean 4 是微软研究院 Leonardo de Moura 主导开发的交互式定理证明
 
 AI 与 Lean 4 的协同证明本质是一个**"生成-验证"闭环**（generate-and-check loop），如图 1 所示：
 
+
 ```
-人      ：定义陈述、把关意图 —— 陈述只有几行，人验得起
-LLM     ：翻译陈述(autoformalization) + 搜索证明(prover) —— 它的每行输出都未经检验
-Lean    ：确定性验证 + 报错 —— 证明可几万行，机器 0.1 秒验完
+人      ：定义陈述、把关意图。陈述只有几行，人验得起
+LLM     ：翻译陈述(autoformalization) + 搜索证明(prover)。它的每行输出都未经检验
+Lean    ：确定性验证 + 报错。证明可几万行，机器 0.1 秒验完
 报错 ──→ 回喂 LLM ──→ 再编译 ──→ …… 直到 0 错误
 ```
 
@@ -125,7 +119,7 @@ Lean    ：确定性验证 + 报错 —— 证明可几万行，机器 0.1 秒�
 2. **Sketch（骨架）**：将思路翻译为 Lean 骨架：主定理与各引理的陈述均通过编译，但证明体用 `sorry` 占位（`sorry` 是 Lean 中表示"此处承认未证"的合法占位符，编译时产生警告而非错误）；
 3. **Prove（填坑）**：主逻辑在 sorry 存在的情况下先行验证，确认证明结构无环、无缺口后，再逐个将 sorry 替换为真实证明。每消灭一个 sorry，编译警告减少一条，进度完全可度量。
 
-这一方法将"证明一个大定理"分解为一系列独立、可并行、可回滚的子任务，是 Aristotle 系统与人类协作项目共同采用的核心工程手段。（`sorry` 的语法级用法见下篇第 11.7 节。）
+这一方法将"证明一个大定理"分解为一系列独立、可并行、可回滚的子任务，是 Aristotle 系统与人类协作项目共同采用的核心工程手段。（`sorry` 的语法级用法见第二部分第 11.7 节。）
 
 把闭环真正跑起来还有三个工程要点，第四部分会完整展开，这里先立住概念：
 
@@ -155,7 +149,7 @@ theorem sum_formula (n : Nat) : 2 * sumTo n = n * (n + 1) := by
     omega   -- 线性部分由 omega 自动收尾
 ```
 
-`sum_formula` 体现了典型分工：**AI（或人类）提供归纳证明的结构性思路，Lean 的自动化战术处理机械的代数变形**。它还暴露了一个重要边界：归纳完成后剩余的目标里出现了 `k` 与 `k+1` 的乘积，这是非线性算术，`omega` 只懂线性关系，必须先用分配律与交换律把乘积改写成与归纳假设同型的项（`have h : ...` 那三行），才能交给 `omega` 收尾。这类"最后一步非线性"在证明中极为常见，是初学者最常见的卡点之一。上例中出现的 `def`、模式匹配、`induction`、`simp` 等，下篇第 11、12 章会逐一拆解；本例已通过 `lake env lean` 逐行验证可编译。
+`sum_formula` 体现了典型分工：**AI（或人类）提供归纳证明的结构性思路，Lean 的自动化战术处理机械的代数变形**。它还暴露了一个重要边界：归纳完成后剩余的目标里出现了 `k` 与 `k+1` 的乘积，这是非线性算术，`omega` 只懂线性关系，必须先用分配律与交换律把乘积改写成与归纳假设同型的项（`have h : ...` 那三行），才能交给 `omega` 收尾。这类"最后一步非线性"在证明中极为常见，是初学者最常见的卡点之一。上例中出现的 `def`、模式匹配、`induction`、`simp` 等，第二部分第 11、12 章会逐一拆解；本例已通过 `lake env lean` 逐行验证可编译。
 
 ## 第 3 章　前沿团队的三种范式
 
@@ -169,9 +163,9 @@ theorem sum_formula (n : Nat) : 2 * sumTo n = n * (n + 1) := by
 | 非形式与形式混合 | Harmonic Aristotle | 大模型先写自然语言证明并拆为引理，`sorry` 占位形式化后由蒙特卡洛图搜索（MCGS）填证明，编译报错回流修正 | 2025 年 IMO 解出 5/6 题、金牌水平；发现陶哲轩《Analysis I》教材 4 处习题错误 |
 | 人机蓝图协作 | 陶哲轩、Gowers 等 | 数学家先撰写"引理依赖图"蓝图，协作者与 AI 并行认领引理；AI 承担机械性步骤，人把控核心数学思想 | PFR 猜想形式化：20 余人 3 周完成；4,694 个 magma 方程的分类 |
 
-三种范式的共同点值得强调：**最终正确性均由 Lean 内核机器验证，AI 仅承担草拟、搜索与机械执行**。差异在于"搜索的自动化程度"：AlphaProof 全自动搜索，Aristotle 以自然语言推理引导搜索，蓝图协作则由人类主导分解。
+三种范式有个共同点：**最终正确性均由 Lean 内核机器验证，AI 仅承担草拟、搜索与机械执行**。差异在于"搜索的自动化程度"：AlphaProof 全自动搜索，Aristotle 以自然语言推理引导搜索，蓝图协作则由人类主导分解。
 
-对个人研究者而言，这三种范式并非遥不可及：Aristotle 的 Draft–Sketch–Prove 可以压缩成"一句话命题进、编译通过证明出"的个人流水线（第四部分实现），蓝图协作的引理依赖图则适用于论文中整节内容的分工形式化。规模不同，骨架相同。
+别以为这三件事只属于大团队：Aristotle 的 Draft–Sketch–Prove 可以压缩成"一句话命题进、编译通过证明出"的个人流水线（第四部分实现），蓝图协作的引理依赖图则适用于论文中整节内容的分工形式化。规模不同，骨架相同。
 
 ## 第 4 章　将论文中的统计学定理形式化的操作路径
 
@@ -209,7 +203,7 @@ theorem sum_formula (n : Nat) : 2 * sumTo n = n * (n + 1) := by
 
 ## 第 5 章　只给问题、未知答案时，Lean 4 能否独立推导出结果？
 
-这是对"AI 能否自主做数学"的关键拷问。答案需要分层表述：
+"AI 能否自主做数学"这个问题，要分层回答：
 
 ### 5.1 Lean 本身：验证器，而非发现引擎
 
@@ -281,7 +275,7 @@ Lean/Isabelle/Rocq（数学定理级，最强保证）
 
 对论文工作的启示是：**定理部分**（数学命题）用 Lean 形式化可提供最强保证；**计算与报告部分**则应选择 statcheck 类审计工具与可复现计算实践，二者互补而非替代。落地顺序上建议先轻后重：statcheck 与 GRIM 检验是分钟级的脚本检查，可以在投稿前对全文先跑一遍；Lean 形式化是小时到天级的工程，只投给核心定理。
 
-## 第 8 章　上篇小结与实践建议
+## 第 8 章　第一部分小结与实践建议
 
 1. **机制上**，AI + Lean 4 的有效性来自"生成-验证"闭环：AI 生成候选，编译器以精确的形式化反馈回授，幻觉被结构性阻断。
 2. **方法上**，陈述形式化是第一位的难点，`sorry` 骨架法是管理复杂度的核心工程手段。
@@ -289,11 +283,11 @@ Lean/Isabelle/Rocq（数学定理级，最强保证）
 4. **定位上**，Lean 验证的是统计学的"数学骨架"而非数据分析流程；论文的定理部分可形式化，实证与计算部分应辅以 statcheck、统计模型检测与可复现工程实践。
 5. **行动建议**：从论文中一条自包含、依赖 mathlib 已有理论的定理入手（如某估计量的相合性或无偏性），按第 4 章路径完整走一遍"陈述 → sorry 骨架 → 填坑"流程，以最小成本验证该范式对本课题的适配度。
 
-> **过渡到下篇**：以上完成了"为什么"与"是什么"的论述，但一切机制最终都落在"你亲手写下的一行行 Lean 代码"上。下篇以零基础视角从安装环境开始，把上篇出现的每个概念（def、tactic、Infoview、sorry、归纳证明）逐一落到手上，学完即可独立看懂并跟做 AI + Lean 的完整工作流。
+> **过渡到第二部分**：以上完成了"为什么"与"是什么"的论述，但一切机制最终都落在"你亲手写下的一行行 Lean 代码"上。第二部分以零基础视角从安装环境开始，把第一部分出现的每个概念（def、tactic、Infoview、sorry、归纳证明）逐一落到手上，学完即可独立看懂并跟做 AI + Lean 的完整工作流。
 
 ---
 
-# 下篇｜零基础实操入门
+# 第二部分｜零基础实操入门
 
 > **本篇假设**：你只会 Python，没听说过 Lean，用的是 Windows。
 
@@ -376,7 +370,7 @@ Lake version x.x.x
 | E5 | 项目建在中文/空格路径，编译报各种奇怪错误 | Lean 工具链对路径敏感 | 把项目挪到纯英文路径，重新打开 |
 | E6 | 杀毒软件报警或编译奇慢 | 实时扫描 `.elan` 目录 | Windows 安全中心 → 排除项 → 添加 `%USERPROFILE%\.elan`（可选操作） |
 
-![alt text](image-5.png)
+![alt text](image-43.png)
 
 ![alt text](image-3.png)
 
@@ -450,7 +444,7 @@ lake exe hello
 
 > **两种"运行"要分清**：
 > - `lake exe hello` = 把程序**跑起来**看输出（像 `python main.py`）；
-> - 编辑器里的实时检查 = **逐行验证**正确性（Python 没有的能力，Lean 的灵魂，即上篇第 1 章所说的内核检查）。
+> - 编辑器里的实时检查 = **逐行验证**正确性（Python 没有的能力，Lean 的灵魂，即第一部分第 1 章所说的内核检查）。
 
 ### 10.5 本章练习
 
@@ -550,7 +544,7 @@ def isBig (n : Nat) : Bool := n > 100
 
 ![alt text](image-17.png)
 
-**请注意**：`n > 100` 在 Lean 里既可以是 `Bool`（算出来 true/false），也可以是**命题 Prop**（一个有待证明的数学陈述）。区分它们是初学者最重要的一课。上篇第 1 章"机器验证证明"的主角正是 Prop：证明一个命题 = 给出它的一个证明项：
+**请注意**：`n > 100` 在 Lean 里既可以是 `Bool`（算出来 true/false），也可以是**命题 Prop**（一个有待证明的数学陈述）。区分它们是初学者最重要的一课。第一部分第 1 章"机器验证证明"的主角正是 Prop：证明一个命题 = 给出它的一个证明项：
 
 ```lean
 #check (fun n : Nat => n > 100)   -- Nat → Prop
@@ -734,7 +728,7 @@ def todo (n : Nat) : Nat := sorry   -- 占位符："这里我还没写完"
 
 ![alt text](image-28.png)
 
-`sorry` 让代码暂时通过编译，但编辑器会一直显示**黄色警告** "declaration uses 'sorry'"，它是 Lean 版的 TODO 标记，**永远不会被忘记**。写证明时先用 `sorry` 占位、再逐步消灭，是标准工作流；上篇第 2.3 节的"sorry 骨架法"正是把这一语法级机制扩展成了管理大型证明的工程方法。
+`sorry` 让代码暂时通过编译，但编辑器会一直显示**黄色警告** "declaration uses 'sorry'"，它是 Lean 版的 TODO 标记，**永远不会被忘记**。写证明时先用 `sorry` 占位、再逐步消灭，是标准工作流；第一部分第 2.3 节的"sorry 骨架法"正是把这一语法级机制扩展成了管理大型证明的工程方法。
 
 ## 第 12 章　定理证明入门：Lean 的灵魂部分
 
@@ -756,7 +750,7 @@ example (n : Nat) : n + 0 = n := by rfl   -- n+0 在定义上就化简为 n
 
 ![alt text](image-31.png)
 
-**Prop 世界 vs Bool 世界**：`2 + 2 = 4` 不是"算出 true 的表达式"，而是一个**命题**；`rfl` 是交给阅卷老师的证明。Lean 的每个定理都是这样一行：**陈述 + 证明**，机器当场验收，这正是上篇第 1 章"证明由内核机器检查"的第一手体验。
+**Prop 世界 vs Bool 世界**：`2 + 2 = 4` 不是"算出 true 的表达式"，而是一个**命题**；`rfl` 是交给阅卷老师的证明。Lean 的每个定理都是这样一行：**陈述 + 证明**，机器当场验收，这正是第一部分第 1 章"证明由内核机器检查"的第一手体验。
 
 ### 12.2 你的第一个 tactic 工具箱
 
@@ -836,7 +830,7 @@ example (n : Nat) : n + 0 = n := by
 - 光标在 `rfl` 行时：目标分成两个（`0 + 0 = 0` 和 `(k+1)+0 = k+1`）；
 - 光标在 `simp` 行时：显示 "No goals"，**证完了**。
 
-这个例子同时揭示了一个秘密：**"证明程序"里，`ih` 是一个可以拿来用的变量**，归纳假设不是玄学，是编译器发给你的现成武器。对照上篇第 2.4 节的 `sum_formula`，你已经能完全读懂它的每一步了。
+这个例子同时揭示了一个秘密：**"证明程序"里，`ih` 是一个可以拿来用的变量**，归纳假设不是玄学，是编译器发给你的现成武器。对照第一部分第 2.4 节的 `sum_formula`，你已经能完全读懂它的每一步了。
 
 ## 第 13 章　练习（由浅入深，附逐步解析）
 
@@ -854,6 +848,8 @@ def cube (n : Nat) : Nat := n ^ 3
 #eval cube 7     -- 343
 #check cube      -- cube : Nat → Nat
 ```
+
+![alt text](image-36.png)
 
 解析：`(n : Nat)` 是参数及类型，第二个 `: Nat` 是返回类型，`:= n ^ 3` 是定义体。`^` 是乘方（Python 的 `**`）。对照 Python：`def cube(n): return n ** 3`。
 </details>
@@ -873,6 +869,8 @@ def myPow (b : Nat) : Nat → Nat
 #eval myPow 2 10    -- 1024
 #eval myPow 3 4     -- 81
 ```
+
+![alt text](image-37.png)
 
 解析：固定底数 b，对指数递归。指数为 0 时结果是 1（基础情形）；指数为 e+1 时结果是 `b × b^e`（归纳情形）。注意参数顺序写法：`def myPow (b : Nat) : Nat → Nat` 中 b 是固定参数，模式匹配只作用在第二个参数上。**注意 Lean 这里不会有任何"溢出"担忧**，Nat 是精确自然数，你可以放心 `#eval myPow 2 100`（结果是 31 位数）。
 
@@ -895,6 +893,8 @@ def myMax : List Nat → Nat
 #eval myMax [3, 9, 4]     -- 9
 #eval myMax ([] : List Nat)  -- 0
 ```
+
+![alt text](image-38.png)
 
 解析：`x :: xs` 把列表拆成首元素和尾部。`let m := ...` 是局部定义（类比 Python 的临时变量）。`if x > m then x else m` 就是三目。两个知识点：①`myMax xs` 是递归调用，列表每次变短 → 终止有保障；②空表时 `myMax [] = 0` 隐含约定（0 恒小于任何元素，所以含 0 的表不受影响；严格的写法应返回 `Option Nat`，正是 11.5 节 `safeHead` 的思路，留作选做：改写 `myMax' : List Nat → Option Nat`）。
 </details>
@@ -959,12 +959,14 @@ theorem my_add_comm (a b : Nat) : a + b = b + a := by
 -- 自检：编译通过、Infoview 显示 No goals，你就独立重建了一条数学定理。
 ```
 
+![alt text](image-39.png)
+
 解析（值得细读）：
 - **5.1** 是"对第二个参数的加 0"，注意它和第 12 章 `0 + n = n` 方向相反，后者是定义直接给出（`Nat.add` 按第一个参数匹配），前者需要归纳。这解释了为什么库里两个引理都存在。归纳情形里 `simp` 不需要 ih，因为 `(k+1) + 0` 直接匹配 `Nat.add_zero`。
 - **5.2** 教你先查字典再动手：先 `#check @Nat.add_succ`，会发现它正是 `n + (m + 1) = (n + m) + 1`，与目标逐字同型，直接当证明项用。看似要归纳的命题常常有现成的定义级引理。
 - **5.3** 对 b 归纳：基础情形 b=0，左侧用 `Nat.add_zero`、右侧用 `Nat.zero_add`；归纳情形中 `(k+1) + a` 由 `Nat.succ_add` 展开、`a + (k+1)` 由 5.2 展开，ih 把 `a + k` 换成 `k + a` 后两边相遇。
 - ⚠️ **实操警告**：不要对形如 `(k+1) + 1` 的目标使用 `Nat.succ_add`，它会产生"左边等于右边"的恒等重写，令 `simp` 无限递归，报 `maximum recursion depth has been reached`。遇到含 `+1` 嵌套的线性目标，直接 `omega` 更稳妥。
-- **彩蛋**：现代 Lean 自带线性算术求解器 `omega`，`theorem cheat (a b : Nat) : a + b = b + a := by omega` 一行完事。但**手写归纳的价值在于理解证明的结构**，这恰是上篇所述"指挥 AI、判断它哪步在糊弄"的基本功。
+- **彩蛋**：现代 Lean 自带线性算术求解器 `omega`，`theorem cheat (a b : Nat) : a + b = b + a := by omega` 一行完事。但**手写归纳的价值在于理解证明的结构**，这恰是第一部分所述"指挥 AI、判断它哪步在糊弄"的基本功。
 </details>
 
 ## 第 14 章　日常使用报错速查（第 10~13 章中可能遇到）
@@ -973,7 +975,7 @@ theorem my_add_comm (a b : Nat) : a + b = b + a := by
 |---|---|---|
 | 一整行红色下划线 "unknown identifier 'x'" | 用了未定义的名字 | 检查拼写、确认定义在**使用之前**（Lean 从上往下读） |
 | "type mismatch" | 类型不匹配 | 读错误信息里的"expected / has type"，多半是 Nat/Int/Float 混用 |
-| "declaration uses 'sorry'" 黄色警告 | 有 `sorry` 占位 | 正常现象，写完消掉即可（见 11.7 与上篇 2.3） |
+| "declaration uses 'sorry'" 黄色警告 | 有 `sorry` 占位 | 正常现象，写完消掉即可（见 11.7 与第一部分 2.3） |
 | `rw` 报 "motive is not type correct" 或 "rewrite failed" | 引理与目标不逐字匹配 | `#check @引理名` 核对陈述方向；或换 `simp` |
 | 递归报 "fail to show termination" | 终止性存疑 | 确认每次递归参数在变小（用 `n+1` 模式或明确减法） |
 | Infoview 卡住不更新 | 服务器抽风 | `Ctrl+Shift+P` → `Lean: Restart File` |
@@ -983,40 +985,38 @@ theorem my_add_comm (a b : Nat) : a + b = b + a := by
 | 报 "unexpected token '}'; expected term"，位置在 `{ι : Type*}` 这类绑定器附近，但那一行明明没有语法错误 | 文件忘了 `import Mathlib`：`Type*` 等记号是 mathlib 提供的语法扩展，没导入时解析器在别处崩溃，报错位置有误导性 | 补上 `import Mathlib`（第三部分写统计代码时最常见，因为文件头注释一长容易把 import 挤掉） |
 | 报 "unexpected token 'section'; expected 'lemma'" | 文档注释 `/-!` 或 `/-- ... -/` 挂在了 `section` 等结构命令上，它们只能挂定理和定义 | 把说明改成普通注释（`--`），文档注释移到下一个定理头上（见 18.1 例 2b） |
 
-## 第 15 章　后续学习路线与资源
+## 第 15 章　Lean后续学习资源
 
 ### 15.1 推荐顺序
 
-1. **Natural Number Game**（强烈首推）：把第 12 章的 tactic 变成闯关游戏，从 `0 + n = n` 一路证明到乘法交换律，全程浏览器里做、零安装。搜索 "Natural Number Game Lean 4" 进入当前官方入口。
+1. **Natural Number Game**（首推）：把第 12 章的 tactic 变成闯关游戏，从 `0 + n = n` 一路证明到乘法交换律，全程浏览器里做、零安装。搜索 "Natural Number Game Lean 4" 进入当前官方入口。
 2. **Theorem Proving in Lean 4**（官方教材，免费在线）：https://lean-lang.org/theorem_proving_in_lean4/ ，系统学类型、证明、tactic 的"字典书"。
-3. **Functional Programming in Lean**（官方，免费在线）：https://lean-lang.org/fp_lean/ ，把 11.4/11.5 节的函数式编程讲深讲透。
+3. **Functional Programming in Lean**（官方，免费在线）：https://lean-lang.org，把 11.4/11.5 节的函数式编程讲深讲透。
 4. **Mathematics in Lean**（社区教程）：https://leanprover-community.github.io/mathematics_in_lean/ ，面向"用 Lean 做数学"的读者，实数、分析、概率都有，是第三部分统计证明所需的 mathlib 预备知识。
-5. **Mathlib**（数学超库）：https://github.com/leanprover-community/mathlib4 ，150 万行社区数学库。安装方法见《AI 赋能统计研究-实操演示方案》README §4（`lake new 项目名 math` 模板一步到位），工程细节另见上篇 4.4。
-6. **社区问答**：Zulip 聊天室 https://leanprover.zulipchat.com （提问前先搜历史）；引理搜索 https://moogle.ai （自然语言查 Mathlib）；在线试玩 https://live.lean-lang.org （零安装跑 Lean）。
-
-### 15.2 与本系列演示的衔接
-
-学完本篇 + Natural Number Game 后，你已经能看懂并跟做《AI 赋能统计研究》第 1 集的全部操作，也就是上篇第 2 章工作流的人工版本：
-
-| 演示中的动作 | 对应本篇知识点 | 对应上篇 |
-|---|---|---|
-| `Demo.lean` 里的 `sorry` | 11.7 节 | 2.3 节 sorry 骨架法 |
-| `ring` / `nlinarith` | 第 12 章 tactic 思想（它们是更强的自动化版本，同属 tactic 家族） | 2.4 节的"自动化战术" |
-| 把数学陈述翻译成 Lean 陈述 | 第 12 章 + `#check` 查引理 | 第 4 章"陈述形式化" |
-| 编译报错回喂 AI | 第 14 章报错速查，你看得懂报错，才能指挥 AI | 第 2 章"编译器即裁判" |
-| Mathlib 项目 `lake exe cache get` | 15.1 第 5 条 | 4.4 工程环境 |
+5. **Mathlib**（数学超库）：https://github.com/leanprover-community/mathlib4 ，150 万行社区数学库。安装方法见《AI 赋能统计研究-实操演示方案》README §4（`lake new 项目名 math` 模板一步到位），工程细节另见第一部分 4.4。
+6. **社区问答**：Zulip 聊天室 https://leanprover.zulipchat.com （提问前先搜历史）
 
 ---
 
 # 第三部分｜证明统计定理
 
-> **本篇前提**：已完成下篇（第 9~15 章），能在核心 Lean 里写函数与归纳证明。本篇解决一个现实问题：统计命题涉及实数、测度、积分、概率，这些都不在 Lean 核心里，而在 mathlib。本篇带你完成 mathlib 的安装配置（含国内网络的完整排坑记录，均为实操真实经历），再通过三个统计结论的完整证明，把"论文命题 → Lean 陈述 → 编译通过"的流程走通。
+> **本篇前提**：已完成第二部分（第 9~15 章），能在核心 Lean 里写函数与归纳证明。本篇解决一个现实问题：统计命题涉及实数、测度、积分、概率，这些都不在 Lean 核心里，而在 mathlib。本篇带你完成 mathlib 的安装配置，再通过三个统计结论的完整证明，把"论文命题 → Lean 陈述 → 编译通过"的流程走通。
 
 ## 第 16 章　安装与配置 mathlib
 
 ### 16.1 为什么必须装 mathlib
 
 Lean 核心只内置了 `Nat` / `Int` 的算术与基础逻辑。统计学需要的实数系 `ℝ`、测度与积分（`MeasureTheory`）、概率分布、极限与收敛，全部位于 mathlib。这也是 mathlib 有 150 万行之巨的原因：它把大学数学的主要内容都形式化了，你的论文定理大概率能站在它上面。
+
+先在 PowerShell 里配置代理（和 9.6 节的操作相同）：
+```
+git config --global http.proxy http://127.0.0.1:端口号
+git config --global https.proxy http://127.0.0.1:端口号
+```
+
+![alt text](image-43.png)
+
+![alt text](image-42.png)
 
 版本机制上有一条铁律：**lean-toolchain 锁定的 Lean 版本与 mathlib 版本一一对应**。mathlib 几乎每天都有新版本，升级 mathlib 就意味着升级 Lean，两者由 `lake update` 自动对齐，不要手动改 `lean-toolchain`。
 
@@ -1027,9 +1027,11 @@ Lean 核心只内置了 `Nat` / `Int` 的算术与基础逻辑。统计学需要
 ```powershell
 D:
 cd D:\lean
-lake new statdemo math
-cd statdemo
+lake new cyidemo math
+cd cyidemo
 ```
+
+![alt text](image-44.png)
 
 `math` 是 lake 内置模板，它会生成两样关键东西：依赖 mathlib 的 `lakefile.toml`，以及与之匹配的 `lean-toolchain`。注意与 10.1 的坑相反，**`lake new` 会创建子目录**（`lake init` 在当前目录初始化），这正是本教程推荐用它的原因。
 
@@ -1040,6 +1042,10 @@ lake update          # 获取 mathlib 源码（首次数百 MB，几分钟到几
 lake exe cache get   # 下载与当前版本匹配的预编译 olean（约 2 GB）
 lake build           # 校验缓存并构建你的项目
 ```
+
+![alt text](image-46.png)
+
+![alt text](image-59.png)
 
 **为什么必须用缓存**：如果不用，`lake build` 会从源码编译整个 mathlib，耗时数小时且极耗内存。`lake exe cache get` 从 mathlib 官方缓存服务（cache.mathlib.org）下载已经编译好的产物，把首次构建压缩到几分钟。代价是约 2 GB 下载量，这是国内用户最容易翻车的环节。
 
@@ -1054,17 +1060,17 @@ lake build           # 校验缓存并构建你的项目
 git 大传输失败的绕过方案（版本号以 `lake update` 报错信息里显示的 revision 为准，如 `fetching revision 'v4.35.0'`）：
 
 ```powershell
-# 在 statdemo 目录下执行
+# 在 cyidemo 目录下执行
 curl.exe -L -C - -o mathlib-src.tar.gz "https://codeload.github.com/leanprover-community/mathlib4/tar.gz/refs/tags/v4.35.0"
 tar -xzf mathlib-src.tar.gz
 # 删除拉取不完整的 .lake\packages\mathlib，把解压出的 mathlib4-4.35.0 移动为 .lake\packages\mathlib
 ```
 
-实测该仓库源码压缩包仅约 23 MB，curl 一把即过，而 git fetch 反复失败。工具选对比传输稳定性影响巨大。
+实测该仓库源码压缩包仅约 23 MB，curl 一把即过，而 git fetch 反复失败。换个工具，传输稳定性天差地别。
 
 ### 16.4 验证安装
 
-把 `Statdemo/Basic.lean` 整个替换为：
+和第二部分一样，用 VS Code 打开项目，把 `Cyidemo/Basic.lean` 整个替换为：
 
 ```lean
 import Mathlib
@@ -1072,17 +1078,23 @@ import Mathlib
 example (a b : ℝ) (h : a ≤ b) : a + 1 ≤ b + 1 := by linarith
 ```
 
-然后：
+![alt text](image-47.png)
+
+然后在 PowerShell 里执行：
 
 ```powershell
-lake env lean Statdemo\Basic.lean
+lake env lean Cyidemo\Basic.lean
 ```
+
+![alt text](image-48.png)
 
 零输出即成功（或 VS Code 打开无红线）。`linarith` 是 mathlib 的线性实数算术战术，Lean 核心没有，它能工作就证明 mathlib 已就位。注意这是实数 `ℝ` 上的不等式，核心版的 `omega` 只管整数与自然数，管不了 `ℝ`。
 
+
+
 ### 16.5 日常使用与维护
 
-- **单文件检查**：日常写证明时用 `lake env lean Statdemo\Basic.lean`（或在 VS Code 里看 Infoview），不要每次全量 `lake build`；
+- **单文件检查**：日常写证明时用 `lake env lean Cyidemo\Basic.lean`（或在 VS Code 里看 Infoview），不要每次全量 `lake build`；
 - **更新 mathlib**：顺序固定为 `lake update` → `lake exe cache get` → `lake build`；
 - **缓存版本错位**：如果 `lake update` 升级了 mathlib 而缓存没跟上，编译会出现大量"找不到 olean"或直接开始从源码编译，重跑 `lake exe cache get` 即可。
 
@@ -1090,11 +1102,11 @@ lake env lean Statdemo\Basic.lean
 
 ## 第 17 章　mathlib 快速上手：查引理、读签名、搭证明
 
-上篇第 5 章说过，AI 团队产出证明的套路是"先把大定理拆成已知结论的组合"。在 Lean 里，"已知结论"就是 mathlib 的引理库。本章解决三个实操问题：统计学内容在 mathlib 的哪里、怎么查、怎么读。
+第一部分第 5 章说过，AI 团队产出证明的套路是"先把大定理拆成已知结论的组合"。在 Lean 里，"已知结论"就是 mathlib 的引理库。本章解决三个实操问题：统计学内容在 mathlib 的哪里、怎么查、怎么读。
 
 ### 17.1 统计学住在 mathlib 的哪一层
 
-mathlib 没有独立的"统计学"模块，统计学的地基（测度论、概率论、积分）都在 `MeasureTheory` 命名空间下。对我们最有用的三个概念是：
+mathlib 没有独立的"统计学"模块，统计学的地基（测度论、概率论、积分）都在 `MeasureTheory` 命名空间下。对我们最有用的概念有四个：
 
 | 概念 | mathlib 中的写法 | 含义 |
 |---|---|---|
@@ -1103,7 +1115,7 @@ mathlib 没有独立的"统计学"模块，统计学的地基（测度论、概�
 | 期望 | `∫ x, f x ∂μ` | 测度论积分。对概率测度而言，积分就是期望 E[X] |
 | 可积 | `Integrable f μ` | 期望存在的最低门槛假设 |
 
-两点初学者最容易困惑的地方，先说清楚：
+初学者最容易困惑的两点，先说清楚：
 
 1. **`∫ x, f x ∂μ` 就是期望，没有单独的 `E[X]` 记号**。mathlib 有 `expectation` 这个记号别名（在概率命名空间里），但底层全是积分引理。记住"期望 = 关于概率测度的积分"，查引理时去搜 `integral_*` 而不是 `expectation_*`，命中率天差地别。
 2. **假设要显式给**。纸面上我们写"E[X] = E[X] + E[Y]"，默认了 X、Y 可积。Lean 里这个默认不存在：`integral_add` 的签名要求你把可积性作为参数递进去。形式化比纸面更啰嗦，是因为它不允许任何"显然"。
@@ -1121,7 +1133,43 @@ open MeasureTheory
 #check integral_const_mul
 ```
 
+![alt text](image-50.png)
+
+
+上面截图里的黄色三角感叹号是 **mathlib 风格检查器（linter）的警告，不是错误**。代码编译和运行完全不受影响，`#check` 照常出结果。
+
+**为什么会出现**
+
+建项目时用了 `lake new ... math` 模板，它在 `lakefile.toml` 里写入了一行：
+
+```toml
+weak.linter.mathlibStandardSet = true
+```
+
+这行的意思是“启用 mathlib 官方的代码风格规范”。mathlib 是几百人协作的项目，对代码格式有严格要求，这两条警告就是规范的一部分：
+
+**警告 1：`Copyright too short!`**
+mathlib 要求每个文件开头有版权声明头（作者、年份、许可证），用于法律归属和贡献统计。你的文件没有，所以提示。
+
+**警告 2：`The module doc-string should be the first command`**
+mathlib 要求 `import` 之后紧跟一段模块级文档注释（`/-! ... -/`），说明这个文件是干什么的。你的 `open MeasureTheory` 直接跟在 import 后面，缺了这段。
+
+**这些规范只对“想给 mathlib 官方贡献代码”的人有实际意义**。自己学习用的文件，完全可以不管黄色警告，或者干脆关掉。
+
+把 `lakefile.toml` 里 `weak.linter.mathlibStandardSet = true` 那行删掉（或改为 `false`），然后在 VS Code 里 `Ctrl+Shift+P` → `Lean 4: Restart File`。所有文件都不会再出这类警告。（为了展示完整信息，我们后文不做修改）
+
+![alt text](image-58.png)
+
 Infoview 会打印完整签名，比如 `integral_add : Integrable f μ → Integrable g μ → ∫ a, (f a + g a) ∂μ = ∫ a, f a ∂μ + ∫ a, g a ∂μ`。看到箭头链就知道要提供哪些假设。
+
+不想开 VS Code 的话，在 PowerShell 里执行 `lake env lean Cyidemo/Basic.lean` 也能看到同样的签名输出：
+
+![alt text](image-49.png)
+
+*减负技巧：只导入需要的模块。把 import Mathlib 换成具体模块，比如这几个 #check 只需要 import Mathlib.MeasureTheory.Integral.Basic，加载量会小一个数量级；等写正式证明时再用全量 import Mathlib 也不迟。*
+
+想立刻验证代码本身对不对，绕开 VS Code 直接跑：
+`cd D:\lean\cyidemo` 后执行 `lake env lean Cyidemo/Basic.lean`，`#check` 的结果会直接打印在终端里。这也正是教程里“以 `lake env lean` 为准”的验证原则
 
 **方式二：`exact?`**。写完定理陈述，把证明先填成 `by exact?`，Lean 会搜索所有能一步闭合目标的引理并给出建议。适合"我确信 mathlib 有这个结论，但不知道叫什么"的场景。缺点是搜索慢（几十秒），且目标陈述必须和引理几乎一字不差。
 
@@ -1147,7 +1195,7 @@ Infoview 会打印完整签名，比如 `integral_add : Integrable f μ → Inte
 --     ∫ a, ∑ i ∈ s, f i a ∂μ = ∑ i ∈ s, ∫ a, f i a ∂μ
 ```
 
-三件事值得专门指出来：
+签名里有三处细节，直接影响用法：
 
 1. **花括号参数是隐式的**。`integral_add` 的类型参数（α、μ、f、g）由 Lean 从你的目标里自动推断，你只需要显式提供箭头后面的 `Integrable` 假设。
 2. **`integral_const_mul` 不要求可积**。它的结论是关于 `∫ a, r * f a ∂μ` 这个积分本身的等式，两边同时存在或同时发散。这是查签名才能发现的细节：猜"肯定要 Integrable"反而会写多余的假设。
@@ -1179,6 +1227,8 @@ theorem expectation_add_const (f : Ω → ℝ) (hf : Integrable f μ) (c : ℝ) 
   simp
 ```
 
+![alt text](image-51.png)
+
 逐行拆解：
 
 1. **计划**：左边是"函数加常数"的积分。把它拆成两块：`f x` 的积分（就是目标右边的第一项）和常数 `c` 的积分。这正是 `integral_add` 干的事，但 `integral_add` 需要两侧都可积：`f` 侧用 `hf`，常数侧用 `integrable_const c`（mathlib 里常数函数永远可积）。
@@ -1186,13 +1236,13 @@ theorem expectation_add_const (f : Ω → ℝ) (hf : Integrable f μ) (c : ℝ) 
 3. **`rw [integral_const]`**：引理 `integral_const : ∫ _ : α, c ∂μ = μ.real univ • c` 把常数积分化成 `μ.real univ • c`（全空间测度乘常数）。
 4. **`simp`** 收尾：在概率测度下，`probReal_univ` 把 `μ.real univ` 化成 1，`1 • c` 化成 `c`，两边相等。
 
-整个证明只做了"两步重写加一步化简"。这就是 mathlib 时代的证明风格：不是从公理开始堆，而是找到正确的引理序列。AI 在这件事上极擅长（上篇 2.3 的机制），因为"从目标形状联想引理名"本质上是模式匹配加检索。
+整个证明只做了"两步重写加一步化简"。这就是 mathlib 时代的证明风格：不是从公理开始堆，而是找到正确的引理序列。AI 在这件事上极擅长（第一部分 2.3 的机制），因为"从目标形状联想引理名"本质上是模式匹配加检索。
 
 ---
 
 ## 第 18 章　形式化并证明统计结论：期望性质与样本均值
 
-本章给出两组可以直接编译运行的完整代码：测度论侧的期望四性质（对应 `statdemo/Scratch1.lean`）和纯代数侧的样本均值两性质（对应 `statdemo/Scratch2.lean`）。全部定理在本文档写作时于 Lean 4.35.0 + mathlib 逐行编译验证通过，验证方法与真实输出见附录 B。
+本章给出两组可以直接编译运行的完整代码：测度论侧的期望四性质（对应 `cyidemo/Scratch1.lean`）和纯代数侧的样本均值两性质（对应 `cyidemo/Scratch2.lean`）。全部定理在本文档写作时于 Lean 4.35.0 + mathlib 逐行编译验证通过，验证方法与真实输出见附录 B。
 
 ### 18.1 期望四性质（测度论侧）
 
@@ -1233,6 +1283,14 @@ theorem expectation_finsetSum {ι : Type*} (s : Finset ι) (f : ι → Ω → �
   integral_finsetSum s hf
 ```
 
+![alt text](image-52.png)
+
+![alt text](image-53.png)
+
+![alt text](image-54.png)
+
+![alt text](image-55.png)
+
 注意四个定理的证明形态：例 1、2、3 是"项模式"直接引用 mathlib 引理（`:=` 后面直接写引理名加假设参数，没有 `by`），只有例 2b 需要重写。这不是偷懒，恰恰说明这几个统计性质在 mathlib 里已经是"一等公民"，我们要做的只是正确地调用。
 
 ### 18.2 从四性质到无偏性：样本均值期望的推论
@@ -1252,6 +1310,8 @@ theorem expectation_sampleMean {ι : Type*} (s : Finset ι)
   rw [h, integral_const_mul, integral_finsetSum s hf]
   ring
 ```
+
+![alt text](image-56.png)
 
 证明思路值得细看，因为它是"引理组合"的典型三段式：
 
@@ -1287,7 +1347,9 @@ theorem sampleMean_const_mul {ι : Type*} (s : Finset ι) (f : ι → ℝ) (k : 
   rw [sampleMean, sampleMean, ← mul_div_assoc k, Finset.mul_sum]
 ```
 
-三个值得注意的细节：
+![alt text](image-57.png)
+
+三个容易被忽略的细节：
 
 1. **`s.Nonempty` 不是可有可无的洁癖**。空集的 `card = 0`，样本均值分母为零。纸面统计里我们从不说"假设 n ≥ 1"，因为默认了；Lean 强迫把默认写出来。这个假设被 `exact_mod_cast` 转换成实数版的 `hcard : (s.card : ℝ) ≠ 0`（自然数序保持到实数强制转换），供 `field_simp` 做分母消去时使用。
 2. **两个定理对非空的依赖并不对称，这是形式化才会暴露的**。平移协变性在空集上变成 `0 = c`，必须靠 `hs` 排除；齐次性在空集上是 `0 = k * 0`，恰好成立，所以连假设都不需要。原因在于 Lean 的实数把 `a / 0` 定义为 0（数学上的"未定义"在类型论里必须给值），这个约定让退化情形自动满足。写初稿时我们给两个定理都加了 `hs`，编译器的 unused-variable 警告揭示了不对称，随后按事实修正。这就是"编译器当审稿人"的日常。
@@ -1308,13 +1370,17 @@ theorem sampleMean_const_mul {ι : Type*} (s : Finset ι) (f : ι → ℝ) (k : 
 
 第 4 步是 AI 增益最大的一步（检索 + 模式联想），第 2 步是 AI 最容易出错的一步（它倾向于省略假设让陈述"看起来干净"，导致证不出来或陈述变弱）。第 19 章的 skill 设计会针对这两点分别给出机制。
 
+
+
+
+
 ---
 
 # 第四部分｜AI 自动化证明 skill 设计
 
 ## 第 19 章　lean-proof skill：把第 2 章的机制封装成工具
 
-上篇 2.3 给出了 AI 与 Lean 协作的机制图：AI 产代码，Lean 当裁判，错误信息回流。本章把这个机制落成一个可复用的 skill（提示词工程 + 工具约定），目录结构随本文档配套开源（`skill/lean-proof/`），可直接放进支持 skill 机制的 AI 工具，也可以把 SKILL.md 当作给任何 AI 助手的系统提示词模板。
+第一部分 2.3 给出了 AI 与 Lean 协作的机制图：AI 产代码，Lean 当裁判，错误信息回流。本章把这个机制落成一个可复用的 skill（提示词工程 + 工具约定），目录结构随本文档配套开源（`skill/lean-proof/`），可直接放进支持 skill 机制的 AI 工具，也可以把 SKILL.md 当作给任何 AI 助手的系统提示词模板。
 
 ### 19.1 设计目标与能力边界
 
@@ -1331,7 +1397,7 @@ skill 只做一件事：**给定一条数学或统计陈述，产出一份通过
 
 **阶段 A：陈述形式化**。把自然语言陈述转成 Lean 定理陈述，只写签名不写证明。此阶段的关键约束：所有量词、假设、类型显式化；逐项向用户（或向上层 agent）确认翻译无损。产出示例见 20.1 的第一步。
 
-**阶段 B：sorry 骨架**。若目标是一条复合定理（比如"样本均值无偏"要经过"和的期望"与"常数提出"两步），先把它拆成引理链，每个引理暂时以 `sorry` 占位，确认整条链编译通过（没有类型错误、没有歧义）。这一步等价于上篇 2.3 说的"先把骨架立起来"。`sorry` 在这里是合法的脚手架，因为 Lean 会持续警告它存在，不会让占位符混进最终结果。
+**阶段 B：sorry 骨架**。若目标是一条复合定理（比如"样本均值无偏"要经过"和的期望"与"常数提出"两步），先把它拆成引理链，每个引理暂时以 `sorry` 占位，确认整条链编译通过（没有类型错误、没有歧义）。这一步等价于第一部分 2.3 说的"先把骨架立起来"。`sorry` 在这里是合法的脚手架，因为 Lean 会持续警告它存在，不会让占位符混进最终结果。
 
 **阶段 C：逐引理填充循环**。对骨架里的每个 `sorry`，执行固定循环：
 
@@ -1374,6 +1440,31 @@ lean-proof/
 ```
 
 `SKILL.md` 的关键条款除流水线外还包括诚实条款：报告中 sorry 数量必须与 `#print axioms` 结果交叉核对；凡是被降级或改写的陈述，必须保留原陈述与改写陈述的对照。这些条款的目的只有一个：让"AI 说证完了"这件事值得信任，而信任的锚点是 Lean 内核，不是 AI 的自信语气。
+
+### 19.6 部署到 WorkBuddy：五步接入
+
+WorkBuddy 支持 folder 式 skill：一个文件夹、一份 `SKILL.md`，即可让 AI 助手按本流水线工作。本仓库的 `skill/lean-proof/` 已经是标准格式（frontmatter 含 `name` 与 `description`），无需改造，直接部署：
+
+1. **复制技能文件夹**。把 `skill/lean-proof/` 整个文件夹复制到 WorkBuddy 的用户级技能目录：
+
+   ```
+   C:\Users\<你的用户名>\.workbuddy\skills\lean-proof\
+   ├── SKILL.md
+   └── templates\
+       └── prompts.md
+   ```
+
+   `SKILL.md` 必须位于文件夹根层；`templates/` 随文件夹一起带上，阶段 A/B/C/D 会引用其中的提示词模板。若只想在某个项目里生效，也可以放到该项目的 `.workbuddy\skills\` 下（项目级，不跨项目可见）。
+
+2. **确认运行环境**。WorkBuddy 的 AI 助手会按 SKILL.md 的指示执行 `lake env lean` 命令，所以这台机器必须已完成第 9 章的工具链安装，且有一个按第 16 章建好的 mathlib 项目（如 `D:\lean\cyidemo`）。Lean 环境没装的话，skill 会在阶段 C 的验证环节卡住。
+
+3. **开新会话并触发**。重新打开一个 WorkBuddy 会话，用自然语言触发即可，例如："用 lean-proof skill 证明：样本均值是总体均值的无偏估计，项目在 D:\lean\cyidemo"。WorkBuddy 会按 frontmatter 的 `description` 匹配触发词（形式化、证明、Lean、sorry 骨架），把 SKILL.md 全文作为操作手册载入，然后按四阶段流水线推进。
+
+4. **按 SKILL.md 的要求提供输入**。两样东西：命题的自然语言描述（含全部假设），以及 Lean 项目根目录。不需要手工写提示词，templates 里的三个模板会在对应阶段自动套用。
+
+5. **核验产出**。skill 结束时会给出终检报告（阶段 D 格式）：通过文件清单、`#print axioms` 输出原文、遗留 warning。自己再跑一遍 `lake env lean 文件路径` 复核是最后的习惯动作，成本一行命令，换来的是不依赖任何 AI 自述的确认。
+
+两点维护提示：改过 SKILL.md 后需要新开会话才生效（已加载的会话不会热更新）；description 里的触发词决定匹配命中率，如果发现该触发时没触发，优先检查措辞是否与 description 重叠。
 
 ---
 
@@ -1434,7 +1525,7 @@ lean-proof/
          修正: 删去该定理的 hs 并在文档注释里说明不对称的原因    结果: 全部通过
 ```
 
-两个卡点的根因值得复述。第 2 轮是 mathlib 细节：`n • x` 与 `n * x` 在类型类层面是两套运算，重写引理必须精确对应；`Finset.card_pos.mpr` 把"集合非空"翻译成"基数大于零"再经 `exact_mod_cast` 升格为实数事实，是这类假设转换的固定套路。第 4 轮则展示了流水线的另一面：编译器警告不仅指出错误，还能反过来审问陈述本身，删掉多余假设让定理更强。这正是 19.2 阶段 C 升级策略"回阶段 A 质疑陈述"的自动触发场景。
+回头看，两个卡点各有代表性。第 2 轮是 mathlib 细节：`n • x` 与 `n * x` 在类型类层面是两套运算，重写引理必须精确对应；`Finset.card_pos.mpr` 把"集合非空"翻译成"基数大于零"再经 `exact_mod_cast` 升格为实数事实，是这类假设转换的固定套路。第 4 轮则展示了流水线的另一面：编译器警告不仅指出错误，还能反过来审问陈述本身，删掉多余假设让定理更强。这正是 19.2 阶段 C 升级策略"回阶段 A 质疑陈述"的自动触发场景。
 
 ### 20.3 演示三：样本均值期望等于各分量期望的平均（无偏性核心）
 
@@ -1469,7 +1560,7 @@ lean-proof/
 | C 填充循环 | 全部四轮内的自主修错 | 无（演示三第 2 轮按升级策略自主回落） |
 | D 终检 | 全自动 | 无 |
 
-收益最大的自动化环节是 C 阶段的"读报错、改一行、重验"循环，它占整个工作量的八成以上，且反馈信号（编译器输出）完全客观。最容易出问题的环节是 A 阶段的假设完备性，机制上的对策是 19.4 模板一的"禁止悄悄删假设"与对照表强制人审。这组经验与上篇第 4 章"什么算好的第一定理"呼应：陈述清晰、假设显式、结论可拆的定理，自动化成功率显著更高。
+收益最大的自动化环节是 C 阶段的"读报错、改一行、重验"循环，它占整个工作量的八成以上，且反馈信号（编译器输出）完全客观。最容易出问题的环节是 A 阶段的假设完备性，机制上的对策是 19.4 模板一的"禁止悄悄删假设"与对照表强制人审。这组经验与第一部分第 4 章"什么算好的第一定理"呼应：陈述清晰、假设显式、结论可拆的定理，自动化成功率显著更高。
 
 ---
 
@@ -1478,12 +1569,12 @@ lean-proof/
 | 术语 | 通俗解释 |
 |---|---|
 | **Lean 4** | 一门"写代码时就被数学级严格检查"的编程语言，既是编程语言也是证明助手 |
-| **定理证明器 / 证明助手** | 帮人构造并检查数学证明的软件总称（Lean、Rocq/Coq、Isabelle 都是，见上篇第 7 章） |
+| **定理证明器 / 证明助手** | 帮人构造并检查数学证明的软件总称（Lean、Rocq/Coq、Isabelle 都是，见第一部分第 7 章） |
 | **类型检查器** | 阅卷老师：逐行检查你的代码在类型和逻辑上是否成立，从不放水 |
 | **依赖类型** | "类型可以依赖值"的类型系统，强到可以把"n 个元素的列表""某命题的证明"都当作类型 |
 | **Prop** | 命题的类型。"2+2=4"是 Prop 的一个元素；证明一个命题 = 构造出这个元素 |
 | **tactic（策略）** | 写在 `by` 后面的一小步证明指令（rfl/simp/rw…），每步啃掉一块目标 |
-| **Goal（目标）** | 当前还剩什么要证；Infoview 里那个 T 形面板显示的就是它（即上篇 2.2 的 goal state） |
+| **Goal（目标）** | 当前还剩什么要证；Infoview 里那个 T 形面板显示的就是它（即第一部分 2.2 的 goal state） |
 | **Infoview** | VS Code 右侧的实时面板：光标在哪行，就显示到那行为止"已证什么、还剩什么" |
 | **引理 / 定理（lemma/theorem）** | 已被证明、可反复引用的命题；库里的引理 = 你的"查字典"素材 |
 | **归纳（induction）** | 证"对所有自然数成立"的标准套路：证 n=0 成立 + 证"若 n 成立则 n+1 成立" |
@@ -1495,17 +1586,17 @@ lean-proof/
 | **elan** | Lean 的版本管理器：安装和切换 Lean 工具链 |
 | **工具链（toolchain）** | 某个具体版本的 Lean 全套（编译器+标准库+lake） |
 | **Mathlib** | 社区维护的 Lean 数学超库（150 万行），做真数学之前必装 |
-| **sorry** | 显式占位符："这段还没写完"，编译器会持续警告，不会让你蒙混过关（工程意义见上篇 2.3） |
-| **内核（kernel）** | Lean 中做最终检查的小而严的核心组件，它说是对的才算对（上篇第 1 章的主角） |
+| **sorry** | 显式占位符："这段还没写完"，编译器会持续警告，不会让你蒙混过关（工程意义见第一部分 2.3） |
+| **内核（kernel）** | Lean 中做最终检查的小而严的核心组件，它说是对的才算对（第一部分第 1 章的主角） |
 
 ## 附录 B　演示环境与验证方法
 
-上篇示例定理在以下环境中编译验证通过：Windows 11 + elan 管理的 Lean 4 工具链（4.35.0），`lake init` 初始化的项目，`lake build` 构建成功，源码位于 `D:\lean\Hello\Basic.lean`；第三、四部分示例在 `lake new statdemo math` 创建的 mathlib 项目（`D:\lean\statdemo`）中验证。下篇全部操作与截图均在同一环境（Windows + VS Code + lean4 扩展）下实际完成。
+第一部分示例定理在以下环境中编译验证通过：Windows 11 + elan 管理的 Lean 4 工具链（4.35.0），`lake init` 初始化的项目，`lake build` 构建成功，源码位于 `D:\lean\Hello\Basic.lean`；第三、四部分示例在 `lake new cyidemo math` 创建的 mathlib 项目（`D:\lean\cyidemo`）中验证。第二部分全部操作与截图均在同一环境（Windows + VS Code + lean4 扩展）下实际完成。
 
 两点验证经验值得记录：
 
 1. **以 `lake env lean 文件路径` 为准**。写作过程中曾出现文件已修改、`lake build` 却因增量缓存未察觉变更而继续报"成功"的情况，导致一个实际上编译失败的定理（`3 ^ n % 3 = 0`，对 n=0 是假命题）被误判为通过。单文件强制检查能绕开缓存，是自动化流水线（第 19 章）选择它作为反馈接口的另一个原因。
-2. **假命题一定能被编译器发现**。`3 ^ 0 % 3 = 1 ≠ 0`，`decide` 当场拒绝。这正是上篇第 1 章"编译器即裁判"的具体体现：无论陈述来自人还是 AI，是假命题就编译不过。
+2. **假命题一定能被编译器发现**。`3 ^ 0 % 3 = 1 ≠ 0`，`decide` 当场拒绝。这正是第一部分第 1 章"编译器即裁判"的具体体现：无论陈述来自人还是 AI，是假命题就编译不过。
 3. **终检以公理依赖收口**。第三部分全部七个定理除编译通过外，还执行了 `#print axioms`，输出均为 `[propext, Classical.choice, Quot.sound]`（Lean 的三条标准公理），确认没有 `sorryAx` 混入。这是第 19 章阶段 D 的标准动作，也是"证完了"这句话的全部证据。
 
 ## 附录 C　参考资料
