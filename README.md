@@ -1,6 +1,6 @@
 # lean4-stat-proof：用 AI + Lean 4 证明统计学定理
 
-> 面向零基础读者（尤其是只会 Python 的统计学/数据科学背景）的 Lean 4 形式化证明教程与自动化流水线。所有代码在 Windows + Lean 4.35.0 + mathlib 环境下逐段编译验证通过（`lake env lean` 零输出，且 `#print axioms` 确认无 `sorryAx`）。
+> 面向零基础读者（尤其是只会 Python 的统计学/数据科学背景）的 Lean 4 形式化证明教程与自动化流水线。所有代码在 Windows + Lean 4.35.0 + mathlib 环境下逐段编译验证通过（`lake env lean` 零输出，且 `#print axioms` 确认无 `sorryAx`）。本项目是开源项目《AI赋能统计研究》( https://github.com/chenyiadam/ai-for-statistics ) 的应用案例。
 
 ## 这是什么
 
